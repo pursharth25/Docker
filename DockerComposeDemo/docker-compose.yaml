@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  mymongo:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    ports:
+      - "27017:27017"
+  mynode:
+    image: mynode:v1
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+      labels:
+        myapp: "v1"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - mymongo
+
+volumes:
+  data: 
